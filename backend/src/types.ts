@@ -4,3 +4,9 @@ type Todo = {
     context: string;
     checked: boolean;
 };
+
+type User = {
+    id: string;
+    username: string;
+    password: string;
+};
