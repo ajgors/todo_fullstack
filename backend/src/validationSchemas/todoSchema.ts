@@ -1,4 +1,6 @@
-export const todoSchema = {
+import { Schema } from 'express-validator';
+
+export const todoSchema: Schema = {
     user_id: {
         isUUID: {
             errorMessage: 'User ID must be a valid UUID',
