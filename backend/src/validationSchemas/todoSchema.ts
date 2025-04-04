@@ -1,15 +1,6 @@
 import { Schema } from 'express-validator';
 
 export const todoSchema: Schema = {
-    user_id: {
-        isUUID: {
-            errorMessage: 'User ID must be a valid UUID',
-        },
-        notEmpty: {
-            errorMessage: 'User ID cannot be empty',
-        },
-    },
-
     title: {
         isString: {
             errorMessage: 'Title must be a string',
