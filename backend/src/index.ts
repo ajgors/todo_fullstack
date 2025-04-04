@@ -11,10 +11,13 @@ setupDB();
 app.use('/api/v1', routers);
 
 app.use('/api/v1/status', (req, res) => {
-    if (db) {
-        console.log(db);
-        res.status(200).send({ msg: 'db connected' });
+    if (!db) {
+        res.status(500).send('Database not reachable');
+        return;
     }
+
+    res.status(200).json('Database is connected');
+    return;
 });
 
 const config = {
