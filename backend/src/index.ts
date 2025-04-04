@@ -4,6 +4,7 @@ import routers from './routes/index';
 import { setupDBClient, dbClient, setupDBPool, dbPool } from './db';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
+import passport from 'passport';
 
 const PGStore = connectPgSimple(session);
 
@@ -26,6 +27,10 @@ app.use(
         }),
     }),
 );
+
+//init passport.js
+app.use(passport.initialize());
+app.use(passport.session()); //attaching dynamic user prop to req obj
 
 app.use('/api/v1', routers);
 
