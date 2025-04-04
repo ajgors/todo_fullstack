@@ -3,20 +3,21 @@ import { dbPool } from 'src/db';
 import { checkSchema, matchedData, validationResult } from 'express-validator';
 import { todoSchema } from 'src/validationSchemas/todoSchema';
 import { idSchema } from 'src/validationSchemas/idSchema';
+import { isLoggedIn } from 'src/uitls/middlewares';
 
 const router = Router();
 
-router.get('/todos', async (req, res) => {
+router.get('/todos', isLoggedIn, async (req, res) => {
     if (!dbPool) {
         res.status(500).send('Database not reachable');
         return;
     }
-
-    const result = await dbPool.query<Todo>('SELECT * FROM todos');
+    //get loged in user todos
+    const result = await dbPool.query<Todo>('SELECT * FROM todos WHERE user_id = $1', [req.user?.id]);
     res.status(200).send({ todos: result?.rows });
 });
 
-router.post('/todos', checkSchema(todoSchema), async (req: Request, res: Response) => {
+router.post('/todos', isLoggedIn, checkSchema(todoSchema), async (req: Request, res: Response) => {
     if (!dbPool) {
         res.status(500).send('Database not reachable');
         return;
@@ -29,11 +30,11 @@ router.post('/todos', checkSchema(todoSchema), async (req: Request, res: Respons
         return;
     }
 
-    const data = matchedData<TodoWithoutId>(req);
+    const data = matchedData<PostTodo>(req);
 
     try {
         //check if use with user_id exists
-        const user = await dbPool.query<User>('SELECT * FROM users WHERE id = $1', [data.user_id]);
+        const user = await dbPool.query<User>('SELECT * FROM users WHERE id = $1', [req.user?.id]);
         if (!user) {
             res.status(400).send('User with this UUID does not exist');
             return;
@@ -42,7 +43,7 @@ router.post('/todos', checkSchema(todoSchema), async (req: Request, res: Respons
         //save todo to db
         const result = await dbPool.query<Todo>(
             'INSERT INTO todos(user_id, title, context, checked) VALUES($1, $2, $3, $4) RETURNING *',
-            [data.user_id, data.title, data.context, data.checked],
+            [req.user?.id, data.title, data.context, data.checked],
         );
         res.json(result.rows[0]);
     } catch (error) {
@@ -50,7 +51,7 @@ router.post('/todos', checkSchema(todoSchema), async (req: Request, res: Respons
     }
 });
 
-router.delete('/todos/:id', checkSchema(idSchema), async (req: Request, res: Response) => {
+router.delete('/todos/:id', isLoggedIn, checkSchema(idSchema), async (req: Request, res: Response) => {
     if (!dbPool) {
         res.status(500).send('Database not reachable');
         return;
@@ -65,38 +66,8 @@ router.delete('/todos/:id', checkSchema(idSchema), async (req: Request, res: Res
     const data = matchedData<{ id: string }>(req);
 
     try {
-        await dbPool.query<Todo>('DELETE FROM todos where id = $1', [data.id]);
+        await dbPool.query<Todo>('DELETE FROM todos where id = $1 and user_id = $2', [data.id, req.user?.id]);
         res.sendStatus(204);
-    } catch (error) {
-        res.status(500).send(`Server error ${error}`);
-    }
-});
-
-router.get('/users/:id/todos', checkSchema(idSchema), async (req: Request, res: Response) => {
-    if (!dbPool) {
-        res.status(500).send('Database not reachable');
-        return;
-    }
-
-    //validation
-    const valResult = validationResult(req);
-    if (!valResult.isEmpty()) {
-        res.status(400).json({ errors: valResult.array() });
-        return;
-    }
-
-    const data = matchedData<{ id: string }>(req);
-    try {
-        //check if use with user_id exists
-        const user = await dbPool.query<User>('SELECT * FROM users where id=$1', [data.id]);
-        if (!user) {
-            res.status(400).send('User with this UUID does not exist');
-            return;
-        }
-
-        //get todos of that user
-        const todos = await dbPool.query<Todo>('SELECT * FROM todos where user_id=$1', [data.id]);
-        res.status(200).send({ todos: todos?.rows });
     } catch (error) {
         res.status(500).send(`Server error ${error}`);
     }
