@@ -1,6 +1,6 @@
 import { Schema } from 'express-validator';
 
-export const todoSchema: Schema = {
+export const userSchema: Schema = {
     username: {
         isString: {
             errorMessage: 'Username must be a string',
