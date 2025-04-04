@@ -8,6 +8,10 @@ export const userSchema: Schema = {
         notEmpty: {
             errorMessage: 'Username cannot be empty',
         },
+        isLength: {
+            options: { min: 3 },
+            errorMessage: 'Username must be at least 3 characters long',
+        },
     },
 
     password: {
