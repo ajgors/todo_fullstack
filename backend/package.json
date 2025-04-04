@@ -12,7 +12,11 @@
     "license": "ISC",
     "description": "",
     "dependencies": {
+        "@types/bcrypt": "^5.0.2",
         "@types/connect-pg-simple": "^7.0.3",
+        "@types/passport": "^1.0.17",
+        "@types/passport-local": "^1.0.38",
+        "bcrypt": "^5.1.1",
         "connect-pg-simple": "^10.0.0",
         "dotenv": "^16.4.7",
         "express": "^5.1.0",
