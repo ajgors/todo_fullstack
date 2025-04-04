@@ -5,6 +5,7 @@ import { dbPool } from 'src/db';
 import { hashPassword } from 'src/uitls/passwordEncryption';
 import { userSchema } from 'src/validationSchemas/userSchema';
 import '../strategies/local-strategy';
+import { isLoggedIn } from 'src/uitls/middlewares';
 
 const router = Router();
 
@@ -52,6 +53,23 @@ router.post('/register', checkSchema(userSchema), async (req: Request, res: Resp
 router.post('/login', passport.authenticate('local'), (req: Request, res: Response) => {
     res.sendStatus(200);
     return;
+});
+
+router.get('/users', isLoggedIn, (req: Request, res: Response) => {
+    res.status(200).json(req.user);
+});
+
+router.post('/logout', isLoggedIn, (req, res, next) => {
+    res.clearCookie('connect.sid');
+    req.logout(err => {
+        if (err) {
+            return next(err);
+        }
+        req.session.destroy(err => {
+            // destroys the session
+            res.send();
+        });
+    });
 });
 
 export default router;
