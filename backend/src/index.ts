@@ -1,17 +1,36 @@
 import express from 'express';
 import 'dotenv/config';
 import routers from './routes/index';
-import { setupDB, db } from './db';
+import { setupDBClient, dbClient, setupDBPool, dbPool } from './db';
+import session from 'express-session';
+import connectPgSimple from 'connect-pg-simple';
+
+const PGStore = connectPgSimple(session);
 
 const app = express();
+setupDBClient();
+setupDBPool();
 app.use(express.json());
 
-setupDB();
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET!,
+        saveUninitialized: false,
+        resave: false,
+        cookie: {
+            maxAge: 1000 * 60 * 60, //hour
+        },
+        store: new PGStore({
+            pool: dbPool,
+            createTableIfMissing: true,
+        }),
+    }),
+);
 
 app.use('/api/v1', routers);
 
 app.use('/api/v1/status', (req, res) => {
-    if (!db) {
+    if (!dbClient) {
         res.status(500).send('Database not reachable');
         return;
     }
