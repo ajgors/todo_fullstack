@@ -1,13 +1,4 @@
 export const todoSchema = {
-    id: {
-        isUUID: {
-            errorMessage: 'ID must be a valid UUID',
-        },
-        notEmpty: {
-            errorMessage: 'ID cannot be empty',
-        },
-    },
-
     user_id: {
         isUUID: {
             errorMessage: 'User ID must be a valid UUID',
