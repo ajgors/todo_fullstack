@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { dbPool } from 'src/db';
-import { checkSchema, matchedData, param, validationResult } from 'express-validator';
+import { checkSchema, matchedData, validationResult } from 'express-validator';
 import { todoSchema } from 'src/validationSchemas/todoSchema';
 import { idSchema } from 'src/validationSchemas/idSchema';
 
@@ -29,11 +29,11 @@ router.post('/todos', checkSchema(todoSchema), async (req: Request, res: Respons
         return;
     }
 
-    const data = matchedData<Todo>(req);
+    const data = matchedData<TodoWithoutId>(req);
 
     try {
         //check if use with user_id exists
-        const user = await dbPool.query<User>('SELECT * FROM users WHERE id = $1', [data.id]);
+        const user = await dbPool.query<User>('SELECT * FROM users WHERE id = $1', [data.user_id]);
         if (!user) {
             res.status(400).send('User with this UUID does not exist');
             return;
