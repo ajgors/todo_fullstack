@@ -1,0 +1,43 @@
+export const todoSchema = {
+    id: {
+        isUUID: {
+            errorMessage: 'ID must be a valid UUID',
+        },
+        notEmpty: {
+            errorMessage: 'ID cannot be empty',
+        },
+    },
+
+    user_id: {
+        isUUID: {
+            errorMessage: 'User ID must be a valid UUID',
+        },
+        notEmpty: {
+            errorMessage: 'User ID cannot be empty',
+        },
+    },
+
+    title: {
+        isString: {
+            errorMessage: 'Title must be a string',
+        },
+        notEmpty: {
+            errorMessage: 'Title cannot be empty',
+        },
+    },
+
+    context: {
+        isString: {
+            errorMessage: 'Context must be a string',
+        },
+        notEmpty: {
+            errorMessage: 'Context cannot be empty',
+        },
+    },
+
+    checked: {
+        isBoolean: {
+            errorMessage: 'Checked must be a boolean',
+        },
+    },
+};
