@@ -6,6 +6,16 @@ import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import passport from 'passport';
 
+declare global {
+    namespace Express {
+        interface User {
+            id: string;
+            username: string;
+            password: string;
+        }
+    }
+}
+
 const PGStore = connectPgSimple(session);
 
 const app = express();

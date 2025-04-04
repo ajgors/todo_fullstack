@@ -22,7 +22,7 @@ router.post('/register', checkSchema(userSchema), async (req: Request, res: Resp
         return;
     }
 
-    const data = matchedData<UserWithoutId>(req);
+    const data = matchedData<PostUser>(req);
 
     //check if user with this username exists in db
     const result = await dbPool.query<User>('SELECT * FROM users WHERE username = $1', [data.username]);

@@ -6,7 +6,7 @@ type Todo = {
     checked: boolean;
 };
 
-type TodoWithoutId = Omit<Todo, 'id'>;
+type PostTodo = Omit<Omit<Todo, 'id'>, 'user_id'>;
 
 type User = {
     id: string;
@@ -14,7 +14,7 @@ type User = {
     password: string;
 };
 
-type UserWithoutId = Omit<User, 'id'>;
+type PostUser = Omit<User, 'id'>;
 
 type ErrorType = {
     msg: string;

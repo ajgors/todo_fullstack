@@ -4,5 +4,6 @@ export function isLoggedIn(request: Request, response: Response, next: NextFunct
     if (request.user) {
         return next();
     }
-    return response.redirect(request.originalUrl.slice(0, 7) + '/login');
+    response.sendStatus(401).end;
+    return;
 }
