@@ -1,21 +1,23 @@
+name: todo-backend-prod
 services:
     db:
         image: postgres:latest
-        container_name: postgres_container
+        container_name: todo_postgres_container_prod
         restart: always
         environment:
             POSTGRES_USER: ${POSTGRES_USER}
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
             POSTGRES_DB: ${POSTGRES_DB}
         ports:
-            - '${POSTGRES_PORT}:5432'
+            - '${POSTGRES_PORT_LOCAL_MACHINE}:${POSTGRES_PORT}'
         volumes:
             - pg_data:/var/lib/postgresql/data
 
     backend:
+        container_name: todo_container_prod
         build: .
         ports:
-            - '8080:8080'
+            - '${APP_PORT_LOCAL_MACHINE}:${APP_PORT}'
         depends_on:
             - db
 

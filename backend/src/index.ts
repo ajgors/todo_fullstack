@@ -55,7 +55,7 @@ app.use('/api/v1/status', (req, res) => {
 });
 
 const config = {
-    PORT: process.env.PORT,
+    PORT: process.env.APP_PORT,
 };
 
 app.listen(config.PORT, () => {
