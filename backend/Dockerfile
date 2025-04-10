@@ -11,7 +11,8 @@ FROM node:22-alpine AS runner
 
 COPY --from=builder package.json package.json
 COPY --from=builder package-lock.json package-lock.json
-COPY --from=builder dist dist
+COPY --from=builder build build
+COPY --from=builder .production.env ./build/.env
 
 ENV NODE_ENV=production
 
@@ -19,4 +20,4 @@ RUN npm ci
 
 EXPOSE 8080
 
-CMD ["node", "dist/index.js"]
+CMD ["node", "--env-file=./build/.env", "build/index.js"]
