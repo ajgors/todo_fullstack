@@ -1,7 +1,8 @@
 import passport from 'passport';
 import { Strategy } from 'passport-local';
-import { dbPool } from 'src/db';
+import { dbPool } from '../db.js';
 import bcrypt from 'bcrypt';
+import type { User } from '../types.js';
 
 passport.serializeUser((user: any, done) => {
     done(null, user.id);

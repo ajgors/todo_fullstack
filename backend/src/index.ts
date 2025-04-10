@@ -1,7 +1,7 @@
 import express from 'express';
 import 'dotenv/config';
-import routers from './routes/index';
-import { setupDBClient, dbClient, setupDBPool, dbPool } from './db';
+import routers from './routes/index.js';
+import { setupDBClient, dbClient, setupDBPool, dbPool } from './db.js';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import passport from 'passport';

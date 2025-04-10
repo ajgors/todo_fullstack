@@ -1,9 +1,10 @@
 {
     "name": "backend",
     "version": "1.0.0",
-    "main": "dist/index.js",
+    "main": "build/index.js",
     "type": "module",
     "scripts": {
+        "build": "rm -rf ./build && mkdir ./build && tsc",
         "start": "tsx src/index.ts",
         "dev": "tsx watch src/index.ts",
         "format": "prettier src/ --write"
@@ -31,6 +32,7 @@
         "@types/express-session": "^1.18.1",
         "@types/pg": "^8.11.11",
         "prettier": "^3.5.3",
-        "tsx": "^4.19.3"
+        "tsx": "^4.19.3",
+        "typescript": "^5.8.3"
     }
 }

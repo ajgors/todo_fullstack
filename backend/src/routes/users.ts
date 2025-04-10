@@ -1,11 +1,12 @@
-import { Request, Response, Router } from 'express';
+import { type Request, type Response, Router } from 'express';
 import { checkSchema, matchedData, validationResult } from 'express-validator';
 import passport from 'passport';
-import { dbPool } from 'src/db';
-import { hashPassword } from 'src/uitls/passwordEncryption';
-import { userSchema } from 'src/validationSchemas/userSchema';
-import '../strategies/local-strategy';
-import { isLoggedIn } from 'src/uitls/middlewares';
+import { dbPool } from '../db.js';
+import { hashPassword } from '../uitls/passwordEncryption.js';
+import { userSchema } from '../validationSchemas/userSchema.js';
+import '../strategies/local-strategy.js';
+import { isLoggedIn } from '../uitls/middlewares.js';
+import type { ErrorType, PostUser, User } from '../types.js';
 
 const router = Router();
 

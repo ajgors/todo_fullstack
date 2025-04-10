@@ -1,9 +1,10 @@
-import { Router, Request, Response } from 'express';
-import { dbPool } from 'src/db';
+import { Router, type Request, type Response } from 'express';
+import { dbPool } from '../db.js';
 import { checkSchema, matchedData, validationResult } from 'express-validator';
-import { todoSchema } from 'src/validationSchemas/todoSchema';
-import { idSchema } from 'src/validationSchemas/idSchema';
-import { isLoggedIn } from 'src/uitls/middlewares';
+import { todoSchema } from '../validationSchemas/todoSchema.js';
+import { idSchema } from '../validationSchemas/idSchema.js';
+import { isLoggedIn } from '../uitls/middlewares.js';
+import type { Todo, PostTodo, User } from '../types.js';
 
 const router = Router();
 
