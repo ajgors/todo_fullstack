@@ -57,7 +57,8 @@ router.post('/login', passport.authenticate('local'), (req: Request, res: Respon
 });
 
 router.get('/users', isLoggedIn, (req: Request, res: Response) => {
-    res.status(200).json(req.user);
+    const { password, ...userWithoutPassword } = req.user!; // Omit password
+    res.status(200).json(userWithoutPassword); // Send response without password field
 });
 
 router.post('/logout', isLoggedIn, (req, res, next) => {
