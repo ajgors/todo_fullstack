@@ -5,6 +5,7 @@ import { setupDBClient, dbClient, setupDBPool, dbPool } from './db.js';
 import session from 'express-session';
 import connectPgSimple from 'connect-pg-simple';
 import passport from 'passport';
+import cors from 'cors';
 
 declare global {
     namespace Express {
@@ -20,11 +21,13 @@ const PGStore = connectPgSimple(session);
 
 const app = express();
 
-app.use((_, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-});
+// CORS Setup
+app.use(
+    cors({
+        origin: 'http://localhost:5173', // Your Vite frontend origin
+        credentials: true, // Allow cookies to be sent
+    }),
+);
 
 setupDBClient();
 setupDBPool();
