@@ -1,18 +1,16 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <header>
-    <div>
-      <HelloWorld msg="You did it!" />
-
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-      </nav>
-    </div>
-  </header>
-
+  <div>
+    <h1>TODO App</h1>
+  </div>
   <RouterView />
 </template>
+
+<style scoped>
+h1 {
+  margin: 20px;
+  text-align: center;
+  font-size: 3.2em;
+}
+</style>
