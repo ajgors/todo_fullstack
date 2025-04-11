@@ -55,4 +55,8 @@ button {
 label {
   margin-top: 10px;
 }
+
+h2 {
+  text-align: center;
+}
 </style>

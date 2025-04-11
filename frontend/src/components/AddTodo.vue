@@ -34,6 +34,9 @@ function handleSubmit() {
       checked: false,
     }
 
+    titleModel.value = ''
+    contextModel.value = ''
+
     props.onAdd(todo)
   }
 }

@@ -26,7 +26,26 @@ onMounted(async () => {
 
 async function checkTodo(todo: Todo) {
   //save to db checked todo
-  //TODO need todo patch on backend
+  try {
+    const response = await fetch(`${apiUrl}todos/${todo.id}`, {
+      credentials: 'include',
+      method: 'PATCH',
+      headers: jsonHeaders,
+      body: JSON.stringify({
+        checked: todo.checked,
+      }),
+    })
+
+    if (response.ok) {
+      //update todo on frontend
+      const targetTodo = todos.value.find((t) => t.id === todo.id)
+      if (targetTodo) {
+        targetTodo.checked = todo.checked
+      }
+    }
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 async function deleteTodo(todo: Todo) {
