@@ -19,6 +19,13 @@ declare global {
 const PGStore = connectPgSimple(session);
 
 const app = express();
+
+app.use((_, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
+
 setupDBClient();
 setupDBPool();
 app.use(express.json());
