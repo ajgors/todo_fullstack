@@ -2,8 +2,11 @@
 import { computed, onMounted, ref } from 'vue'
 import { apiUrl } from '@/api'
 import { useAuthStore } from '@/store/userStore'
-import { type Todo } from '@/types'
+import type { Todo, TodoPost } from '@/types'
 import TodoItem from '@/components/TodoItem.vue'
+import AddTodo from '@/components/AddTodo.vue'
+import { jsonHeaders } from '../api'
+
 let todos = ref<Todo[]>([])
 
 type Data = {
@@ -52,11 +55,18 @@ async function deleteTodo(todo: Todo) {
   }
 }
 
-async function addTodo(todo: Todo) {
+async function addTodo(todo: TodoPost) {
+  console.log(todo)
   try {
     const response = await fetch(`${apiUrl}todos`, {
       credentials: 'include',
       method: 'POST',
+      headers: jsonHeaders,
+      body: JSON.stringify({
+        title: todo.title,
+        context: todo.context,
+        checked: todo.checked,
+      }),
     })
 
     const data = await response.json()
@@ -81,25 +91,29 @@ async function addTodo(todo: Todo) {
 
 <template>
   <main>
-    <ul>
-      <TodoItem
-        v-for="todo in todos"
-        :key="todo.id"
-        :data="todo"
-        :onCheck="
-          (v) => {
-            todo.checked = v
-            checkTodo(todo)
-          }
-        "
-        :onDelete="() => deleteTodo(todo)"
-      />
-    </ul>
+    <div>
+      <ul>
+        <TodoItem
+          v-for="todo in todos"
+          :key="todo.id"
+          :data="todo"
+          :onCheck="
+            (v) => {
+              todo.checked = v
+              checkTodo(todo)
+            }
+          "
+          :onDelete="() => deleteTodo(todo)"
+        />
+      </ul>
+      <AddTodo :onAdd="(todo: TodoPost) => addTodo(todo)" />
+    </div>
   </main>
 </template>
 
 <style scoped>
 ul {
   list-style: none;
+  margin-bottom: 30px;
 }
 </style>

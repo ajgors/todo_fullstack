@@ -10,3 +10,9 @@ export type Todo = {
   context: string
   checked: boolean
 }
+
+export type TodoPost = {
+  title: string
+  context: string
+  checked: boolean
+}

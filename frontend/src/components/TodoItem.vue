@@ -48,6 +48,7 @@ button {
   margin: 5px;
   background-color: #cc0000;
   border: none;
+  padding: 1px 6px;
   color: white;
 }
 </style>
