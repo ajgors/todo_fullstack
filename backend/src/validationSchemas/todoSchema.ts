@@ -25,3 +25,14 @@ export const todoSchema: Schema = {
         },
     },
 };
+
+// mark all fields as optional for patch
+export const todoPatchSchema = Object.fromEntries(
+    Object.entries(todoSchema).map(([key, rules]) => [
+        key,
+        {
+            ...rules,
+            optional: true,
+        },
+    ]),
+);
